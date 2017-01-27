@@ -1,3 +1,3 @@
-// import GridView from '../component/GridView';
+import GridView from '../component/GridView';
 
-// export default GridView;
+export default GridView;

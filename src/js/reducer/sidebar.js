@@ -1,4 +1,4 @@
-import { SET_SIDEBAR_STATUS } from '../action/sidebar';
+import { SET_SIDEBAR_STATUS } from '../constants';
 
 const initialState = {
   show: false,

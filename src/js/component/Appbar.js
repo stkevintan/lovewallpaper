@@ -20,7 +20,7 @@ export default class extends React.Component {
   render() {
     return (
       <AppBar
-        onLeftIconButtonTouchTap={this.handlerNavBtnClick}
+        onLeftIconButtonTouchTap={this.handlerNavBtnClick.bind(this)}
         className="navbar"
         title="Make Wallpaper Great Again"
         iconClassNameRight="muidocs-icon-navigation-expand-more"
