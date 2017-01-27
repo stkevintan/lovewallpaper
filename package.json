@@ -1,5 +1,5 @@
 {
-  "name": "electron-quick-start",
+  "name": "lovewallpaer",
   "version": "1.0.0",
   "description": "A minimal Electron application",
   "main": "main.js",
@@ -17,6 +17,31 @@
   "author": "GitHub",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "^1.4.1"
+    "babel-loader": "^6.2.10",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-react": "^6.22.0",
+    "babel-preset-stage-0": "^6.22.0",
+    "electron": "^1.4.1",
+    "fly": "^1.4.1",
+    "fly-esnext": "^2.0.0",
+    "fly-less": "^0.3.0",
+    "fly-webpack": "^1.1.1",
+    "json-loader": "^0.5.4",
+    "webpack": "^1.14.0"
+  },
+  "dependencies": {
+    "electron": "^1.4.15",
+    "import-directory": "^1.0.6",
+    "material-ui": "^0.16.7",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "react-redux": "^5.0.2",
+    "react-router": "^3.0.2",
+    "react-tap-event-plugin": "^2.0.1",
+    "redux": "^3.6.0",
+    "redux-logger": "^2.7.4",
+    "redux-thunk": "^2.2.0",
+    "require-directory": "^2.1.1"
   }
 }
