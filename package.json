@@ -6,7 +6,7 @@
   "scripts": {
     "start": "electron ."
   },
-  "repository": "https://github.com/electron/electron-quick-start",
+  "repository": "https://github.com/stkevinta/lovewallpaper",
   "keywords": [
     "Electron",
     "quick",
@@ -31,9 +31,12 @@
     "webpack": "^1.14.0"
   },
   "dependencies": {
+    "browser-sync": "^2.18.6",
     "electron": "^1.4.15",
     "import-directory": "^1.0.6",
     "material-ui": "^0.16.7",
+    "node-fetch": "^1.6.3",
+    "query-string": "^4.3.1",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.2",

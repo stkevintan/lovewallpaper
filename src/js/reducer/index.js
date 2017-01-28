@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
 import sidebar from './sidebar';
-// import importDirectory from 'import-directory';
+import metadata from './metadata';
 
-// const reducers = importDirectory(module);
 export default combineReducers({
   sidebar,
+  metadata,
 });

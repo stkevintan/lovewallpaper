@@ -4,7 +4,7 @@ const webpack = require('webpack');
 module.exports = {
   watch: true,
   cache: true,
-  // target: 'atom',
+  target: 'electron',
   devtool: 'source-map',
   output: {
     // path: path.join(__dirname, 'app'),

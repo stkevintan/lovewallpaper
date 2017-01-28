@@ -8,56 +8,23 @@ import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import Divider from 'material-ui/Divider';
 
-const tilesData = [
-  {
-    img: 'http://s.qdcdn.com/c/14326266,1920,1080.jpg',
-    title: 'Breakfast',
-    author: 'jill111',
-  },
-  {
-    img: 'http://keyin.me/images/avatar.jpg',
-    title: 'Tasty burger',
-    author: 'pashminu',
-  },
-  {
-    img: 'http://keyin.me/images/avatar.jpg',
-    title: 'Camera',
-    author: 'Danson67',
-  },
-  {
-    img: 'http://keyin.me/images/avatar.jpg',
-    title: 'Morning',
-    author: 'fancycrave1',
-  },
-  {
-    img: 'http://keyin.me/images/avatar.jpg',
-    title: 'Hats',
-    author: 'Hans',
-  },
-  {
-    img: 'http://keyin.me/images/avatar.jpg',
-    title: 'Honey',
-    author: 'fancycravel',
-  },
-  {
-    img: 'http://keyin.me/images/avatar.jpg',
-    title: 'Vegetables',
-    author: 'jill111',
-  },
-  {
-    img: 'http://keyin.me/images/avatar.jpg',
-    title: 'Water plant',
-    author: 'BkrmadtyaKarki',
-  },
-];
-export default class WallpaperGridView extends React.Component {
+export default class ImageGrids extends React.Component {
+  static propTypes = {
+    tiles: React.PropTypes.arrayOf(React.PropTypes.shape({
+      key: React.PropTypes.string.isRequired,
+      small: React.PropTypes.string.isRequired,
+      big: React.PropTypes.string.isRequired,
+      down: React.PropTypes.number.isRequired,
+    })).isRequired,
+  }
   render() {
     return (
       <section className="grid">
-        {tilesData.map(tile => (
-          <Paper key={tile.title} className="grid__item" zDepth={1}>
-            <figure style={{ backgroundImage: `url(${tile.img})` }} className="grid__figure" />
+        {this.props.tiles.map(tile => (
+          <Paper key={tile.key} className="grid__item" zDepth={1} preview={tile.big}>
+            <figure style={{ backgroundImage: `url(${tile.small})` }} className="grid__figure" />
             <figcaption className="grid__figcaption">
+              <div>{tile.down}</div>
               <IconButton><StarBorder /></IconButton>
               <IconMenu
                 iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}

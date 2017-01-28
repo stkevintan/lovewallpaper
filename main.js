@@ -1,4 +1,6 @@
 const electron = require('electron');
+
+const ipcMain = electron.ipcMain;
 // Module to control application life.
 const app = electron.app;
 // Module to create native browser window.
@@ -7,6 +9,7 @@ const BrowserWindow = electron.BrowserWindow;
 const path = require('path');
 const url = require('url');
 
+const API = require('./backend/api');
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
@@ -22,6 +25,11 @@ function createWindow() {
     slashes: true,
   }));
 
+  ipcMain.on('bootstrap', (e) => {
+    const { width, height } = electron.screen.getPrimaryDisplay().workAreaSize;
+    const api = new API({ width, height });
+    api.load().then(json => e.sender.send('bootstrap-reply', json));
+  });
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
 
