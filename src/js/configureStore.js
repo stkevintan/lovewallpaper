@@ -1,10 +1,16 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import createLogger from 'redux-logger';
+import { Iterable } from 'immutable';
 
 import reducers from './reducer';
 
-const logger = createLogger();
+const logger = createLogger({
+  stateTransformer: (state) => {
+    if (Iterable.isIterable(state)) return state.toJS();
+    return state;
+  },
+});
 
 export default function configureStore(initialState) {
   const store = createStore(reducers, initialState, compose(

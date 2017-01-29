@@ -1,4 +1,4 @@
-import { combineReducers } from 'redux';
+import { combineReducers } from 'redux-immutable';
 import sidebar from './sidebar';
 import metadata from './metadata';
 

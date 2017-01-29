@@ -1,12 +1,9 @@
 import { SET_SIDEBAR_STATUS } from '../constants';
 
-const initialState = {
-  show: false,
-};
-
-export default function sidebar(state = initialState, action) {
+export default function sidebar(state, action) {
   if (action.type === SET_SIDEBAR_STATUS) {
-    return { ...state, show: typeof action.show === 'undefined' ? !state.show : action.show };
+    const show = typeof action.show === 'undefined' ? !state.get('show') : action.show;
+    return state.set('show', show);
   }
   return state;
 }

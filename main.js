@@ -10,28 +10,44 @@ const path = require('path');
 const url = require('url');
 
 const API = require('./backend/api');
+
+const api = new API();
+
+function listeners() {
+  ipcMain.on('load-metadata', (e) => {
+    const size = electron.screen.getPrimaryDisplay().size;
+    api.load(size).then(json => e.sender.send('load-metadata-reply', json));
+  });
+
+  ipcMain.on('load-list', (e, destUrl) => {
+    console.log(destUrl);
+    api.fetch(destUrl).then(json => e.sender.send('load-list-reply', json));
+  });
+}
+
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
 function createWindow() {
   // Create the browser window.
-  mainWindow = new BrowserWindow({ width: 800, height: 600 });
-
+  mainWindow = new BrowserWindow({
+    width: 1200,
+    height: 800,
+    title: 'LoveWallpaper',
+    autoHideMenuBar: true,
+  });
+  // mainWindow.setMenu(null);
+  listeners();
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({
     pathname: path.join(__dirname, 'dist', 'index.html'),
     protocol: 'file:',
     slashes: true,
   }));
-
-  ipcMain.on('bootstrap', (e) => {
-    const { width, height } = electron.screen.getPrimaryDisplay().workAreaSize;
-    const api = new API({ width, height });
-    api.load().then(json => e.sender.send('bootstrap-reply', json));
-  });
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 
   // Emitted when the window is closed.
   mainWindow.on('closed', () => {

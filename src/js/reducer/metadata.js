@@ -1,18 +1,13 @@
+import Immutable from 'immutable';
 import { LOAD_METADATA, LOAD_LIST } from '../constants';
 
-export default function (state = null, action) {
-  if (action.type === LOAD_METADATA) return action.metadata;
+
+export default function (state, action) {
+  if (action.type === LOAD_METADATA) return Immutable.fromJS(action.metadata);
   if (action.type === LOAD_LIST) {
-    // location
-    const keyArr = action.path.split('.');
-    const patch = {};
-    let iter = patch;
-    for (const key of keyArr) {
-      iter[key] = {};
-      iter = iter[key];
-    }
-    iter = action.metadata;
-    return { ...state, ...patch };
+    // cannot load-list before load-metadata
+    if (state.isEmpty()) throw Error('Cannot call load-list before load-metadata');
+    return state.updateIn(action.position, map => map.merge(action.content));
   }
   return state;
 }

@@ -8,8 +8,8 @@ import { setSidebarStatus } from '../action/sidebar';
 
 
 const mapStateToProps = state => ({
-  show: state.sidebar.show,
-  category: state.metadata.category,
+  show: state.getIn(['sidebar', 'show']),
+  category: state.getIn(['metadata', 'category']).toJS(),
 });
 const mapDisPatcherToProps = dispatch => bindActionCreators({
   setSidebarStatus,

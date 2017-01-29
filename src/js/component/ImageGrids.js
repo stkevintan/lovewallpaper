@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Paper from 'material-ui/Paper';
-import StarBorder from 'material-ui/svg-icons/toggle/star-border';
+import FileDownload from 'material-ui/svg-icons/file/file-download';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
@@ -21,11 +21,11 @@ export default class ImageGrids extends React.Component {
     return (
       <section className="grid">
         {this.props.tiles.map(tile => (
-          <Paper key={tile.key} className="grid__item" zDepth={1} preview={tile.big}>
+          <Paper key={tile.key} className="grid__item" zDepth={1}>
             <figure style={{ backgroundImage: `url(${tile.small})` }} className="grid__figure" />
             <figcaption className="grid__figcaption">
-              <div>{tile.down}</div>
-              <IconButton><StarBorder /></IconButton>
+              <IconButton><FileDownload /></IconButton>
+              <span className="download-stat">{tile.down}</span>
               <IconMenu
                 iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}

@@ -16,18 +16,27 @@ module.exports = class API {
     this.height = opts.height;
     this.initial = false;
   }
-  load() {
-    const query = { width: this.width, height: this.height };
+  load({ width, height }) {
+    const query = { width: width || this.width, height: height || this.height };
+    console.log(url.format({
+      protocol: 'http',
+      hostname,
+      query,
+    }));
     return fetch(url.format({
       protocol: 'http',
       hostname,
       query,
     })).then(res => res.json())
       .then((json) => {
+        console.log('fetch done');
         this.initial = true;
         this.urlMap = json;
         // console.log(this, this.urlMap);
         return json;
-      });
+      }).catch(err => console.log('fetch failed', err));
+  }
+  fetch(destUrl) {
+    return fetch(destUrl).then(res => res.json());
   }
 };

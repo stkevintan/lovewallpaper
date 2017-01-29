@@ -1,5 +1,6 @@
 @charset "utf-8";
 @import 'var.less';
+@import 'splash.less';
 
 *{
   box-sizing: border-box;
@@ -36,12 +37,17 @@ body{
     background-position: 50%;
   }
   &__figcaption{
-    text-align: right;
+    display:flex;
+    justify-content: flex-end;
+    align-items: center;
     margin-top: -48px;
     background: rgba(0, 0, 0, 0.4);
     color: #fff;
     svg{
       color: #fff !important;
+    }
+    .download-stat{
+      line-height: 48px;
     }
   }
 }
