@@ -1,4 +1,9 @@
 # LoveWallpaper
 
-A 3rd-party lovewallpaper client, Using electron , React, Redux, React-router, Material-ui.   
+A 3rd-party lovewallpaper client, Using Electron, React, Redux, Immutable, React-router, Material-ui.
 *Under Development*
+
+## Snapshots
+![index](https://raw.githubusercontent.com/stkevintan/lovewallpaper/master/snapshots/lovewallpaper.png)  
+
+
