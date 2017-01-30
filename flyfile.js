@@ -23,7 +23,10 @@ webpackConfig.output.path = PATH.script.target;
 
 export default async function() {
   await this.start('watch');
-  proc.spawn(electron, ['.']);
+  const win = proc.spawn(electron, ['.']);
+  win.stdout.on('data', data => console.log(data.toString()));
+  win.stderr.on('data', data => console.error(data.toString()));
+  win.on('exit', code => console.log(`child process exited with code ${code}`));
 }
 
 export async function script() {

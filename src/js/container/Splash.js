@@ -1,8 +1,8 @@
 import React from 'react';
-import { indigo500 } from 'material-ui/styles/colors';
+import muiThemeable from 'material-ui/styles/muiThemeable';
 
-export default () => (
-  <div className="wrapper-loading" style={{ backgroundColor: indigo500 }}>
+export default muiThemeable()(({ muiTheme }) => (
+  <div className="wrapper-loading" style={{ backgroundColor: muiTheme.palette.primary1Color }}>
     <div className="image-loader">
       <div className="rect">
         <div className="dot d_i" />
@@ -19,4 +19,4 @@ export default () => (
       </defs>
     </svg>
   </div>
-);
+));

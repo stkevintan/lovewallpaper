@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux-immutable';
-import sidebar from './sidebar';
+import ui from './ui';
 import metadata from './metadata';
 
 export default combineReducers({
-  sidebar,
+  ui,
   metadata,
 });

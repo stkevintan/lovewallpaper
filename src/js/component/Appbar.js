@@ -2,7 +2,7 @@ import React from 'react';
 import AppBar from 'material-ui/AppBar';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { setSidebarStatus } from '../action/sidebar';
+import { setSidebarStatus } from '../action/ui';
 
 
 const mapDispatchToProps = dispatch => bindActionCreators({

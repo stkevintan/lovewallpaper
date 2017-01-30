@@ -1,6 +1,5 @@
+import { ipcRenderer } from 'electron';
 import { LOAD_METADATA, LOAD_LIST } from '../constants';
-
-const ipcRenderer = require('electron').ipcRenderer;
 
 export function loadMetadata() {
   return (dispatch) => {
@@ -25,7 +24,8 @@ export function loadMetadata() {
 
 export function loadList(url, position) {
   return (dispatch) => {
-    ipcRenderer.on('load-list-reply', (e, metadata) => {
+    // cannot use on.
+    ipcRenderer.once('load-list-reply', (e, metadata) => {
       for (const data of metadata.data) {
         data.small = data.small.replace(/(\/\d+),\d+,\d+/, '$1,250,250');
       }
@@ -35,6 +35,7 @@ export function loadList(url, position) {
         position,
       });
     });
+
     ipcRenderer.send('load-list', url);
   };
 }

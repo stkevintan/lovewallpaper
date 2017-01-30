@@ -6,10 +6,13 @@
   box-sizing: border-box;
 }
 
-html,body{
+html,body,#root,.wrapper{
   margin:0;
   padding:0;
+  height: 100%;
+  min-height: 100%;
 }
+
 
 .navbar{
   position: fixed !important;
@@ -23,9 +26,8 @@ body{
 //gridview
 .grid{
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   flex-wrap: wrap;
-  padding: 0 10px;
   &__item{
     width: @grid-item_width;
     margin: 20px;
@@ -50,4 +52,11 @@ body{
       line-height: 48px;
     }
   }
+}
+.sidebar__link{
+  display:block;
+  text-decoration: none;
+  margin: -16px;
+  padding: 16px;
+  color: inherit;
 }

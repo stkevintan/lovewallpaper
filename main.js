@@ -8,6 +8,7 @@ const BrowserWindow = electron.BrowserWindow;
 
 const path = require('path');
 const url = require('url');
+const wallpaper = require('wallpaper');
 
 const API = require('./backend/api');
 
@@ -23,6 +24,29 @@ function listeners() {
     console.log(destUrl);
     api.fetch(destUrl).then(json => e.sender.send('load-list-reply', json));
   });
+
+  ipcMain.on('download-image', (e, imageUrl) => {
+    console.log('download image from: ', imageUrl);
+    api.download(imageUrl).then((filePath) => {
+      console.log('download successfully at', filePath);
+      e.sender.send('message', `Downloaded at ${filePath}`);
+    });
+  });
+  ipcMain.on('set-wallpaper', (e, imageUrl) => {
+    console.log('download image from: ', imageUrl);
+    api.download(imageUrl).then((filePath) => {
+      console.log('download successfully at', filePath);
+      return filePath;
+    }).then((filePath) => {
+      wallpaper.set(filePath).then(() => {
+        console.log('set wallpaper done');
+        e.sender.send('message', 'Wallpaper has set :)');
+      }).catch((err) => {
+        console.log('set wallpaper error', err);
+        e.sender.send('message', `Set wallpaper failed :( , ${err}`);
+      });
+    });
+  });
 }
 
 
@@ -33,7 +57,7 @@ let mainWindow;
 function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 1200,
+    width: 290 * 4,
     height: 800,
     title: 'LoveWallpaper',
     autoHideMenuBar: true,

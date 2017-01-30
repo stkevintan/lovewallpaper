@@ -3,6 +3,7 @@ import thunk from 'redux-thunk';
 import createLogger from 'redux-logger';
 import { Iterable } from 'immutable';
 
+import { INITIAL_STATE } from './constants';
 import reducers from './reducer';
 
 const logger = createLogger({
@@ -12,7 +13,7 @@ const logger = createLogger({
   },
 });
 
-export default function configureStore(initialState) {
+function configureStore(initialState) {
   const store = createStore(reducers, initialState, compose(
         applyMiddleware(thunk, logger),
         window.devToolsExtension ? window.devToolsExtension() : f => f
@@ -26,3 +27,6 @@ export default function configureStore(initialState) {
   }
   return store;
 }
+
+const store = configureStore(INITIAL_STATE);
+export default store;

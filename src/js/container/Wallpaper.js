@@ -6,7 +6,7 @@ import { loadList } from '../action/loader';
 import ImageGrids from '../component/ImageGrids';
 
 const mapStateToProps = state => ({
-  recommend: state.getIn(['metadata', 'recommend']).toJS(),
+  wallpaper: state.getIn(['metadata', 'wallpaper']).toJS(),
 });
 const mapDispatchToProps = dispatch => bindActionCreators({ loadList }, dispatch);
 
@@ -14,15 +14,13 @@ const mapDispatchToProps = dispatch => bindActionCreators({ loadList }, dispatch
 export default class extends React.Component {
   static propTypes = {
     loadList: React.PropTypes.func.isRequired,
-    recommend: React.PropTypes.object.isRequired,
+    wallpaper: React.PropTypes.object.isRequired,
   }
   constructor(props) {
     super(props);
-    props.loadList(props.recommend.url, ['recommend']);
+    props.loadList(props.wallpaper.url, ['wallpaper']);
   }
   render() {
-    return (
-      <ImageGrids tiles={this.props.recommend.data || []} />
-    );
+    return (<ImageGrids tiles={this.props.wallpaper.data || []} />);
   }
 }
