@@ -1,8 +1,12 @@
 # LoveWallpaper
 
-A 3rd-party lovewallpaper client, Using Electron, React, Redux, Immutable, React-router, Material-ui.
+A 3rd-party lovewallpaper client, Using Electron, React, Redux, Immutable, React-router, Material-ui.   
 
-## Install
+
+[Download](https://github.com/stkevintan/lovewallpaper/releases)
+
+
+## Build
 ```bash
 git clone https://github.com/stkevintan/lovewallpaper
 cd lovewallpaper
@@ -12,12 +16,7 @@ fly
 
 ## Snapshots
 
-![list](https://raw.githubusercontent.com/stkevintan/lovewallpaper/master/snapshots/lovewallpaper-list.png)
-![sidebar](https://raw.githubusercontent.com/stkevintan/lovewallpaper/master/snapshots/lovewallpaper-sidebar.png)
-![preview](https://raw.githubusercontent.com/stkevintan/lovewallpaper/master/snapshots/lovewallpaper-preview.png)
+![list](https://raw.githubusercontent.com/stkevintan/lovewallpaper/master/snapshots/lovewallpaper-list2.png)
+![sidebar](https://raw.githubusercontent.com/stkevintan/lovewallpaper/master/snapshots/lovewallpaper-sidebar2.png)
+![preview](https://raw.githubusercontent.com/stkevintan/lovewallpaper/master/snapshots/lovewallpaper-preview2.png)
 
-## Troubleshooting
-
-### Cannot set wallpaper on Gnome 3.
-This is a bug of the dependence module called [wallpaper](https://github.com/sindresorhus/wallpaper).  
-Additionally, my [fork](https://github.com/stkevintan/wallpaper) could solve this problem.
