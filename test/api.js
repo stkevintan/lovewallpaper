@@ -1,4 +1,4 @@
-const API = require('../backend/api');
+const API = require('../api');
 
 const api = new API();
 

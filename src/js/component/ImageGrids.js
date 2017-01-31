@@ -1,5 +1,5 @@
 import React from 'react';
-
+import ScrollReveal from 'scrollreveal';
 import ScrollBars from 'react-custom-scrollbars';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import Paper from 'material-ui/Paper';
@@ -14,7 +14,6 @@ import Wallpaper from 'material-ui/svg-icons/device/wallpaper';
 
 import Divider from 'material-ui/Divider';
 
-import { ipcRenderer } from 'electron';
 
 export default muiThemeable()(class ImageGrids extends React.Component {
   static propTypes = {
@@ -24,13 +23,23 @@ export default muiThemeable()(class ImageGrids extends React.Component {
       big: React.PropTypes.string.isRequired,
       down: React.PropTypes.number.isRequired,
     })).isRequired,
+    handleMore: React.PropTypes.func.isRequired,
+    handleDownload: React.PropTypes.func.isRequired,
+    handleSet: React.PropTypes.func.isRequired,
   }
   constructor(props) {
     super(props);
     this.state = {
       dialogOpen: false,
       url: '',
+      column: 4,
     };
+    this.sr = ScrollReveal();
+    window.addEventListener('resize', this.handleWinResize.bind(this));
+  }
+  componentDidUpdate() {
+    this.sr.reveal('.grid__item', { container: document.querySelector('.scrollarea > div') });
+    this.handleWinResize();
   }
   handleDialogClose() {
     this.setState({ dialogOpen: false });
@@ -38,15 +47,30 @@ export default muiThemeable()(class ImageGrids extends React.Component {
   handleDialogOpen(url) {
     this.setState({ dialogOpen: true, url });
   }
-  handleDownload(url) {
-    ipcRenderer.send('download-image', url);// directly send signal to main process.
+  handleWinResize() {
+    const cols = Math.ceil((window.innerWidth - 40) / 290);
+    if (cols !== this.state.column) this.setState({ column: cols });
   }
-  handleWallpaper(url) {
-    ipcRenderer.send('set-wallpaper', url);
+  handleWinScroll(e) {
+    const elem = e.target;
+    const limit = elem.scrollHeight - elem.clientHeight - 290;
+    if (window.CanSendLoadMoreSignal && elem.scrollTop >= limit) {
+      window.CanSendLoadMoreSignal = false;
+      console.log('load more...');
+      this.props.handleMore();
+    }
   }
   render() {
+    const zfill = this.state.column - this.props.tiles.length % this.state.column;
+    window.CanSendLoadMoreSignal = true;
     return (
-      <ScrollBars style={{ height: '100%' }} autoHide autoHideTimeout={200}>
+      <ScrollBars
+        className="scrollarea"
+        style={{ height: '100%' }}
+        autoHide
+        autoHideTimeout={200}
+        onScroll={this.handleWinScroll.bind(this)}
+      >
         <section className="grid">
           {this.props.tiles.map(tile => (
             <Paper key={tile.key} className="grid__item" zDepth={1}>
@@ -61,12 +85,12 @@ export default muiThemeable()(class ImageGrids extends React.Component {
               <figcaption className="grid__figcaption">
                 <span className="download-stat">{tile.down}</span>
                 <IconButton
-                  onTouchTap={() => this.handleDownload(tile.big)}
+                  onTouchTap={() => this.props.handleDownload(tile.big)}
                 >
                   <FileDownload />
                 </IconButton>
                 <IconButton
-                  onTouchTap={() => this.handleWallpaper(tile.big)}
+                  onTouchTap={() => this.props.handleSet(tile.big)}
                 >
                   <Wallpaper />
                 </IconButton>
@@ -82,17 +106,19 @@ export default muiThemeable()(class ImageGrids extends React.Component {
                   <Divider />
                   <MenuItem
                     primaryText="Set as Wallpaper"
-                    onTouchTap={() => this.handleWallpaper(tile.big)}
+                    onTouchTap={() => this.props.handleSet(tile.big)}
                   />
                   <MenuItem
                     primaryText="Download Wallpaper"
-                    onTouchTap={() => this.handleWallpaper(tile.big)}
+                    onTouchTap={() => this.props.handleDownload(tile.big)}
                   />
                 </IconMenu>
               </figcaption>
             </Paper>
           ))}
-          <div style={{ flex: 'auto' }} />
+          {
+            Array.from({ length: zfill }).map((v, i) => <div key={i} className="grid__item" />)
+          }
         </section>
         <Dialog
           modal={false}
@@ -100,7 +126,7 @@ export default muiThemeable()(class ImageGrids extends React.Component {
           onRequestClose={this.handleDialogClose.bind(this)}
           contentStyle={{
             width: '90vw',
-            height: '90vh',
+            height: '80vh',
             maxWidth: '90vw',
           }}
         >
@@ -109,7 +135,7 @@ export default muiThemeable()(class ImageGrids extends React.Component {
             alt="preview"
             style={{
               width: '90vw',
-              maxHeight: '90vh',
+              maxHeight: '80vh',
               objectFit: 'cover',
               margin: '-24px',
               display: 'block',

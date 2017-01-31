@@ -1,0 +1,40 @@
+import React from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
+import CircularProgress from 'material-ui/CircularProgress';
+import { setModalStatus } from '../action/ui';
+
+const mapStateToProps = state => state.getIn(['ui', 'modal']).toObject();
+const mapDispatchToProps = dispatch => bindActionCreators({ setModalStatus }, dispatch);
+
+@connect(mapStateToProps, mapDispatchToProps)
+export default class extends React.Component {
+  handleClose = () => {
+    this.props.setModalStatus(false);
+  };
+
+  render() {
+    const actions = [
+      <FlatButton
+        label="Hide"
+        primary
+        onTouchTap={this.handleClose.bind(this)}
+      />,
+    ];
+    return (
+      <Dialog
+        title="Processing"
+        actions={actions}
+        modal
+        open={this.props.show}
+      >
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <CircularProgress />
+          <span style={{ flex: 1, marginLeft: '20px' }}>{this.props.message}</span>
+        </div>
+      </Dialog>
+    );
+  }
+}

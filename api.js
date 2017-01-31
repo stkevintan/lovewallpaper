@@ -1,5 +1,5 @@
 const fetch = require('node-fetch');
-const { hostname, savePath } = require('../setting');
+const { hostname, savePath } = require('./setting');
 const { join } = require('path');
 const { createWriteStream, existsSync, mkdirSync } = require('fs');
 const url = require('url');

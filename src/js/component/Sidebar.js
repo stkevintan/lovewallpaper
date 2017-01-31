@@ -60,19 +60,19 @@ export default class extends React.Component {
         >
           <ScrollBars autoHide>
             <List>
-              <SideBarLink key="wallpaper" to="/image/wallpaper">
-                <ListItem onTouchTap={() => this.props.setSidebarStatus(false)}>
-                  首页
-                </ListItem>
-              </SideBarLink>
               <SideBarLink key="recommend" to="/image/recommend">
                 <ListItem onTouchTap={() => this.props.setSidebarStatus(false)}>
-                  推荐
+                  推荐壁纸
+                </ListItem>
+              </SideBarLink>
+              <SideBarLink key="wallpaper" to="/image/wallpaper">
+                <ListItem onTouchTap={() => this.props.setSidebarStatus(false)}>
+                  试试手气
                 </ListItem>
               </SideBarLink>
               <SideBarLink key="ranking" to="/image/ranking">
                 <ListItem onTouchTap={() => this.props.setSidebarStatus(false)}>
-                  排行榜
+                  壁纸排行
                 </ListItem>
               </SideBarLink>
               <ListItem

@@ -39,7 +39,7 @@ class Skeletons extends React.Component {
     const mainWin = (
       <Router history={hashHistory}>
         <Route path="/" component={Layout}>
-          <IndexRoute component={Wallpaper} />
+          <IndexRoute component={Recommend} />
           <Route path="image">
             <Route path="wallpaper" component={Wallpaper} />
             <Route path="recommend" component={Recommend} />

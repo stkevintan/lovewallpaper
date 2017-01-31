@@ -8,9 +8,9 @@ const BrowserWindow = electron.BrowserWindow;
 
 const path = require('path');
 const url = require('url');
-const wallpaper = require('wallpaper');
+const wallpaper = require('./wallpaper');
 
-const API = require('./backend/api');
+const API = require('./api');
 
 const api = new API();
 
@@ -21,31 +21,33 @@ function listeners() {
   });
 
   ipcMain.on('load-list', (e, destUrl) => {
-    console.log(destUrl);
-    api.fetch(destUrl).then(json => e.sender.send('load-list-reply', json));
+    console.log('load-list, url: ', destUrl);
+    api.fetch(destUrl)
+      .then(json => e.sender.send('load-list-reply', json))
+      .catch((err) => { console.log(err); e.sender.send('message', 'Loading Failed  Σ(;ﾟдﾟ)'); });
+  });
+  ipcMain.on('load-more', (e, destUrl) => {
+    console.log('load-more, url: ', destUrl);
+    api.fetch(destUrl)
+      .then(json => e.sender.send('load-more-reply', json))
+      .catch((err) => { console.log(err); e.sender.send('message', 'Loading Failed  Σ(;ﾟдﾟ)'); });
   });
 
   ipcMain.on('download-image', (e, imageUrl) => {
     console.log('download image from: ', imageUrl);
-    api.download(imageUrl).then((filePath) => {
-      console.log('download successfully at', filePath);
-      e.sender.send('message', `Downloaded at ${filePath}`);
-    });
+    api.download(imageUrl)
+      .then(filePath => e.sender.send('message', `Downloaded at ${filePath} (•ㅂ•)/`))
+      .catch((err) => { console.log(err); e.sender.send('message', 'Downloading Failed  Σ(;ﾟдﾟ)'); });
   });
+
   ipcMain.on('set-wallpaper', (e, imageUrl) => {
     console.log('download image from: ', imageUrl);
-    api.download(imageUrl).then((filePath) => {
-      console.log('download successfully at', filePath);
-      return filePath;
-    }).then((filePath) => {
-      wallpaper.set(filePath).then(() => {
-        console.log('set wallpaper done');
-        e.sender.send('message', 'Wallpaper has set :)');
-      }).catch((err) => {
-        console.log('set wallpaper error', err);
-        e.sender.send('message', `Set wallpaper failed :( , ${err}`);
-      });
-    });
+    api.download(imageUrl)
+    .catch((err) => { console.log(err); e.sender.send('message', 'Loading Failed  Σ(;ﾟдﾟ)'); })
+    .then(filePath => wallpaper.set(filePath)
+      .then(() => e.sender.send('message', 'Wallpaper has been set (•ㅂ•)/'))
+      .catch((err) => { console.log(err); e.sender.send('message', 'Loading Failed  Σ(;ﾟдﾟ)'); })
+    );
   });
 }
 
@@ -57,7 +59,7 @@ let mainWindow;
 function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 290 * 4,
+    width: 290 * 4 + 40,
     height: 800,
     title: 'LoveWallpaper',
     autoHideMenuBar: true,

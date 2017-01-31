@@ -1,5 +1,5 @@
 const path = require('path');
-const webpack = require('webpack');
+
 
 module.exports = {
   watch: true,
@@ -35,8 +35,8 @@ module.exports = {
       exclude: /node_modules/,
     }],
   },
-  // plugins: [
+  plugins: [
   //   new webpack.optimize.DedupePlugin(),
   //   new webpack.optimize.UglifyJsPlugin({ comments: false }),
-  // ],
+  ],
 };
