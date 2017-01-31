@@ -1,6 +1,9 @@
 const proc = require('child_process');
+const zip = new (require('node-zip'))();
+const fs = require('fs');
 const electron = require('electron');
 const webpack = require('webpack');
+const packager = require('electron-packager');
 const webpackConfig = require('./webpack.config');
 
 let isProd = false;
@@ -24,43 +27,68 @@ const PATH = {
 export default async function() {
   await this.start('watch');
   const win = proc.spawn(electron, ['.']);
-  win.stdout.on('data', data => console.log(data.toString()));
-  win.stderr.on('data', data => console.error(data.toString()));
-  win.on('exit', code => console.log(`child process exited with code ${code}`));
+  win.stdout.on('data', data => this.log(data.toString()));
+  win.stderr.on('data', data => this.error(data.toString()));
+  win.on('exit', code => this.log(`child process exited with code ${code}`));
 }
-const switchPATH = (from, to) => {
-  const Q = [PATH];
-  while (Q.length > 0) {
-    const front = Q.shift();
-    Object.keys(front).forEach((key) => {
-      if (!front[key]) return; // exclude null,[],'',undefined
-      if (typeof front[key] === 'object') {
-        Q.push(front[key]);
-        return;
-      }
-      if (typeof front[key] !== 'string') return;
-      front[key] = front[key].replace(from, to);
-    });
-  }
-};
+
+export async function clean() {
+  return await this.clear('dist');
+}
+
+
+export async function build() {
+  await this.start(['script', 'page', 'style'], { parallel: true });
+}
 
 export async function release() {
   isProd = true;
-  switchPATH('dist', 'release');
-  return await this.start(['script', 'page', 'style'], { parallel: true });
+  return await this.start(['clean', 'build']);
 }
+
+function generator(platform) {
+  const platforms = Array.isArray(platform) ? platform : [platform];
+  return async function() {
+    // await this.start('release');
+    const ps = platforms.map(p => new Promise((resolve, reject) => {
+      packager(require('./build.config')[p], (err, appPath) => {
+        if (err) {
+          reject(err);
+          this.error(err);
+        } else {
+          // compres
+          zip.file(appPath);
+          const data = zip.generate({ base64: false, compression: 'DEFLATE' });
+          fs.writeFile(`${appPath}.zip`, data, 'binary', (err2) => {
+            if (err2) reject(err2);
+            else resolve(appPath);
+          });
+        }
+      });
+    }));
+    const paths = await Promise.all(ps);
+    paths.forEach((p) => {
+      this.log(`Package was generated at ${p}`);
+    });
+  };
+}
+
+export const linux = generator('linux');
+export const win = generator('win');
+export const osx = generator('osx');
+export const all = generator(['linux', 'win', 'osx']);
 
 export async function script() {
   if (isProd) {
     webpackConfig.devtool = undefined;
     webpackConfig.watch = false;
     webpackConfig.plugins.push(new webpack.optimize.DedupePlugin());
-    webpackConfig.plugins.push(new webpack.optimize.UglifyJsPlugin({ comments: false }));
+    webpackConfig.plugins.push(new webpack.optimize.UglifyJsPlugin({ comments: false, output: '' }));
   }
   webpackConfig.output.path = PATH.script.target;
   await this.source(PATH.script.source)
   .webpack(webpackConfig, null, (err, stats) => {
-    if (err) console.log(err, stats);
+    if (err) this.log(err, stats);
   });
 }
 

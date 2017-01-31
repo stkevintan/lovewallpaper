@@ -35,11 +35,11 @@ export default muiThemeable()(class ImageGrids extends React.Component {
       column: 4,
     };
     this.sr = ScrollReveal();
-    window.addEventListener('resize', this.handleWinResize.bind(this));
+    // window.addEventListener('resize', this.handleWinResize.bind(this));
   }
   componentDidUpdate() {
     this.sr.reveal('.grid__item', { container: document.querySelector('.scrollarea > div') });
-    this.handleWinResize();
+    // this.handleWinResize();
   }
   handleDialogClose() {
     this.setState({ dialogOpen: false });
@@ -61,7 +61,7 @@ export default muiThemeable()(class ImageGrids extends React.Component {
     }
   }
   render() {
-    const zfill = this.state.column - this.props.tiles.length % this.state.column;
+    // const zfill = this.state.column - this.props.tiles.length % this.state.column;
     window.CanSendLoadMoreSignal = true;
     return (
       <ScrollBars
@@ -117,7 +117,7 @@ export default muiThemeable()(class ImageGrids extends React.Component {
             </Paper>
           ))}
           {
-            Array.from({ length: zfill }).map((v, i) => <div key={i} className="grid__item" />)
+            // Array.from({ length: zfill }).map((v, i) => <div key={i} className="grid__item" />)
           }
         </section>
         <Dialog
@@ -133,7 +133,9 @@ export default muiThemeable()(class ImageGrids extends React.Component {
           <img
             src={this.state.url}
             alt="preview"
+            onTouchTap={this.handleDialogClose.bind(this)}
             style={{
+              cursor: 'pointer',
               width: '90vw',
               maxHeight: '80vh',
               objectFit: 'cover',

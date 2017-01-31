@@ -1,7 +1,7 @@
 {
-  "name": "lovewallpaer",
+  "name": "LoveWallpaperHD",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "A simplest lovewallpaper client",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
@@ -12,7 +12,7 @@
     "LoveWallpaper"
   ],
   "author": "KevinTan",
-  "license": "CC0-1.0",
+  "license": "MIT",
   "devDependencies": {
     "babel-loader": "^6.2.10",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
@@ -21,12 +21,14 @@
     "babel-preset-stage-0": "^6.22.0",
     "cssnano": "^3.10.0",
     "electron": "^1.4.1",
+    "electron-packager": "^8.5.1",
     "fly": "^1.4.1",
     "fly-esnext": "^2.0.0",
     "fly-less": "^0.3.0",
     "fly-postcss": "^1.2.0",
     "fly-webpack": "^1.1.1",
     "json-loader": "^0.5.4",
+    "node-zip": "^1.1.1",
     "webpack": "^1.14.0"
   },
   "dependencies": {

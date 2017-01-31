@@ -17,7 +17,7 @@ export default class extends React.Component {
     return (
       <Snackbar
         open={this.props.show}
-        message={this.props.message}
+        message={this.props.message || ''}
         autoHideDuration={this.props.timeout}
         onRequestClose={this.handleRequestClose.bind(this)}
       />

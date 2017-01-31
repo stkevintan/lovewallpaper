@@ -1,5 +1,8 @@
 import React from 'react';
 import Drawer from 'material-ui/Drawer';
+import AppBar from 'material-ui/AppBar';
+import IconButton from 'material-ui/IconButton';
+import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import { List, ListItem } from 'material-ui/List';
 import { connect } from 'react-redux';
 import ScrollBars from 'react-custom-scrollbars';
@@ -58,7 +61,12 @@ export default class extends React.Component {
           open={this.props.show}
           onRequestChange={() => this.props.setSidebarStatus(false)}
         >
-          <ScrollBars autoHide>
+          <AppBar
+            title="Menu"
+            iconElementLeft={<IconButton><NavigationClose /></IconButton>}
+            onLeftIconButtonTouchTap={() => this.props.setSidebarStatus(false)}
+          />
+          <ScrollBars autoHide style={{ height: 'calc(100% - 64px)' }}>
             <List>
               <SideBarLink key="recommend" to="/image/recommend">
                 <ListItem onTouchTap={() => this.props.setSidebarStatus(false)}>

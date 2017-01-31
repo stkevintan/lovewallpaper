@@ -1,9 +1,7 @@
 const electron = require('electron');
 
 const ipcMain = electron.ipcMain;
-// Module to control application life.
 const app = electron.app;
-// Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow;
 
 const path = require('path');
@@ -14,10 +12,20 @@ const API = require('./api');
 
 const api = new API();
 
+let mainWindow;
+
 function listeners() {
+  ipcMain.on('control-window', (e, type) => {
+    if (type === 'maximize') mainWindow.maximize();
+    else if (type === 'minimize') mainWindow.minimize();
+    else if (type === 'restore') mainWindow.restore();
+    else if (type === 'unmaximize') mainWindow.unmaximize();
+    else if (type === 'close') mainWindow.close();
+    else if (type === 'quit') app.quit();
+  });
   ipcMain.on('load-metadata', (e) => {
-    const size = electron.screen.getPrimaryDisplay().size;
-    api.load(size).then(json => e.sender.send('load-metadata-reply', json));
+    const screenSize = electron.screen.getPrimaryDisplay().size;
+    api.load(screenSize).then(json => e.sender.send('load-metadata-reply', json));
   });
 
   ipcMain.on('load-list', (e, destUrl) => {
@@ -52,17 +60,23 @@ function listeners() {
 }
 
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
-let mainWindow;
-
 function createWindow() {
-  // Create the browser window.
+  const size = { width: 290 * 4 + 40, height: 800 };
+  let suffix = 'png';
+  if (process.platform === 'win32') suffix = 'ico';
+  if (process.platform === 'darwin')suffix = 'icns';
+  const screenSize = electron.screen.getPrimaryDisplay().size;
+  size.height = size.width * screenSize.height / screenSize.width; // aspect ratio.
   mainWindow = new BrowserWindow({
-    width: 290 * 4 + 40,
-    height: 800,
-    title: 'LoveWallpaper',
+    width: size.width,
+    height: size.height,
+    // position windows by hand instead of center, to suit multiple display
+    x: (screenSize.width - size.width) / 2,
+    y: (screenSize.height - size.height) / 2,
+    title: 'LoveWallpaperHD',
+    icon: `./appicons/appicon@128.${suffix}`,
     autoHideMenuBar: true,
+    frame: false,
   });
   // mainWindow.setMenu(null);
   listeners();
