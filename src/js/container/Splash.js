@@ -1,6 +1,11 @@
 import React from 'react';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 
+
+// class Splash extends React.Component{
+
+// }
+
 export default muiThemeable()(({ muiTheme }) => (
   <div className="wrapper-loading" style={{ backgroundColor: muiTheme.palette.primary1Color }}>
     <div className="image-loader">

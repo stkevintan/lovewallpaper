@@ -117,6 +117,10 @@ export default muiThemeable()(class ImageGrids extends React.Component {
             </Paper>
           ))}
           {
+            // generate enough blank block to fill space to make the last line align its item to other line.
+            Array.from({ length: 10 }).map((v, i) => (
+              <div key={i} style={{ width: '290px', height: 0 }} />
+            ))
             // Array.from({ length: zfill }).map((v, i) => <div key={i} className="grid__item" />)
           }
         </section>
