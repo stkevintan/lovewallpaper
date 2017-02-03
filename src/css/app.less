@@ -25,6 +25,7 @@ body{
 }
 //gridview
 .grid{
+  position: relative;
   display: flex;
   padding: 0 20px;
   justify-content: center;
@@ -37,8 +38,8 @@ body{
     cursor: pointer;
     margin: 0;
     height: @grid-item_width;
-    background-size: cover;
-    background-position: 50%;
+    // background-size: cover;
+    // background-position: 50%;
   }
   &__figcaption{
     display:flex;
@@ -62,6 +63,22 @@ body{
     margin: -16px;
     padding: 16px;
     color: inherit;
+  }
+}
+
+//Image
+.image{
+  width: 100%;
+  height: 100%;
+  &__preload{
+    width: 100%;
+    height: 100%;
+  }
+  &__img{
+    display:block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 }
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import ScrollReveal from 'scrollreveal';
 import ScrollBars from 'react-custom-scrollbars';
-import muiThemeable from 'material-ui/styles/muiThemeable';
+
 import Paper from 'material-ui/Paper';
 import Dialog from 'material-ui/Dialog';
 
@@ -14,8 +14,9 @@ import Wallpaper from 'material-ui/svg-icons/device/wallpaper';
 
 import Divider from 'material-ui/Divider';
 
+import Image from './Image';
 
-export default muiThemeable()(class ImageGrids extends React.Component {
+export default class ImageGrids extends React.Component {
   static propTypes = {
     tiles: React.PropTypes.arrayOf(React.PropTypes.shape({
       key: React.PropTypes.string.isRequired,
@@ -32,24 +33,17 @@ export default muiThemeable()(class ImageGrids extends React.Component {
     this.state = {
       dialogOpen: false,
       url: '',
-      column: 4,
     };
     this.sr = ScrollReveal();
-    // window.addEventListener('resize', this.handleWinResize.bind(this));
   }
   componentDidUpdate() {
     this.sr.reveal('.grid__item', { container: document.querySelector('.scrollarea > div') });
-    // this.handleWinResize();
   }
   handleDialogClose() {
     this.setState({ dialogOpen: false });
   }
   handleDialogOpen(url) {
     this.setState({ dialogOpen: true, url });
-  }
-  handleWinResize() {
-    const cols = Math.ceil((window.innerWidth - 40) / 290);
-    if (cols !== this.state.column) this.setState({ column: cols });
   }
   handleWinScroll(e) {
     const elem = e.target;
@@ -61,7 +55,6 @@ export default muiThemeable()(class ImageGrids extends React.Component {
     }
   }
   render() {
-    // const zfill = this.state.column - this.props.tiles.length % this.state.column;
     window.CanSendLoadMoreSignal = true;
     return (
       <ScrollBars
@@ -76,12 +69,10 @@ export default muiThemeable()(class ImageGrids extends React.Component {
             <Paper key={tile.key} className="grid__item" zDepth={1}>
               <figure
                 onTouchTap={() => this.handleDialogOpen(tile.big)}
-                style={{
-                  backgroundColor: this.props.muiTheme.palette.primary1Color,
-                  backgroundImage: `url(${tile.small})`,
-                }}
                 className="grid__figure"
-              />
+              >
+                <Image src={tile.small} />
+              </figure>
               <figcaption className="grid__figcaption">
                 <span className="download-stat">{tile.down}</span>
                 <IconButton
@@ -117,11 +108,10 @@ export default muiThemeable()(class ImageGrids extends React.Component {
             </Paper>
           ))}
           {
-            // generate enough blank block to fill space to make the last line align its item to other line.
+            // generate enough blank block to fill space
             Array.from({ length: 10 }).map((v, i) => (
               <div key={i} style={{ width: '290px', height: 0 }} />
             ))
-            // Array.from({ length: zfill }).map((v, i) => <div key={i} className="grid__item" />)
           }
         </section>
         <Dialog
@@ -134,14 +124,13 @@ export default muiThemeable()(class ImageGrids extends React.Component {
             maxWidth: '90vw',
           }}
         >
-          <img
+          <Image
             src={this.state.url}
-            alt="preview"
             onTouchTap={this.handleDialogClose.bind(this)}
             style={{
               cursor: 'pointer',
               width: '90vw',
-              maxHeight: '80vh',
+              height: '80vh',
               objectFit: 'cover',
               margin: '-24px',
               display: 'block',
@@ -151,4 +140,4 @@ export default muiThemeable()(class ImageGrids extends React.Component {
       </ScrollBars>
     );
   }
-});
+}

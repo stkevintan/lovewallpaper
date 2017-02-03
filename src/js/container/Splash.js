@@ -1,13 +1,11 @@
 import React from 'react';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 
-
-// class Splash extends React.Component{
-
-// }
+import Controls from '../component/Controls';
 
 export default muiThemeable()(({ muiTheme }) => (
-  <div className="wrapper-loading" style={{ backgroundColor: muiTheme.palette.primary1Color }}>
+  <div className="splash" style={{ backgroundColor: muiTheme.palette.primary1Color }}>
+    <div className="splash__controls"><Controls /></div>
     <div className="image-loader">
       <div className="rect">
         <div className="dot d_i" />

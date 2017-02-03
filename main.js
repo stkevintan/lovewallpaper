@@ -21,6 +21,7 @@ function listeners() {
     else if (type === 'restore') mainWindow.restore();
     else if (type === 'unmaximize') mainWindow.unmaximize();
     else if (type === 'close') mainWindow.close();
+    else if (type === 'reload')mainWindow.reload();
     else if (type === 'quit') app.quit();
   });
   ipcMain.on('load-metadata', (e) => {
