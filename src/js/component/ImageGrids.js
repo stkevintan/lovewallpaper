@@ -1,9 +1,12 @@
 import React from 'react';
-import ScrollReveal from 'scrollreveal';
-import ScrollBars from 'react-custom-scrollbars';
+import ReactDOM from 'react-dom';
+import autobind from 'autobind-decorator';
+// import ScrollReveal from 'scrollreveal';
 
+import ScrollBars from 'react-custom-scrollbars';
 import Paper from 'material-ui/Paper';
 import Dialog from 'material-ui/Dialog';
+import { debounce } from 'lodash';
 
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
@@ -15,6 +18,7 @@ import Wallpaper from 'material-ui/svg-icons/device/wallpaper';
 import Divider from 'material-ui/Divider';
 
 import Image from './Image';
+import Lazyload from './Lazyload';
 
 export default class ImageGrids extends React.Component {
   static propTypes = {
@@ -33,27 +37,56 @@ export default class ImageGrids extends React.Component {
     this.state = {
       dialogOpen: false,
       url: '',
+      scrollDOM: undefined,
     };
-    this.sr = ScrollReveal();
+    // add debounce
+    this.handleWinScroll = debounce(this.handleWinScroll, 200);
   }
-  componentDidUpdate() {
-    this.sr.reveal('.grid__item', { container: document.querySelector('.scrollarea > div') });
+  componentDidMount() {
+    // fuck react/no-did-mount-set-state
+    this.setState({ scrollDOM: ReactDOM.findDOMNode(this.scrollarea).firstChild });
   }
+  @autobind
   handleDialogClose() {
     this.setState({ dialogOpen: false });
   }
+
+  @autobind
   handleDialogOpen(url) {
     this.setState({ dialogOpen: true, url });
   }
+
+  @autobind
   handleWinScroll(e) {
     const elem = e.target;
+    // thi.setState({ scrollTop: elem.scrollTop });
+    // pass down the scroll down
+    // this.setState({ scrollBottom: elem.scrollTop + elem.clientHeight });
     const limit = elem.scrollHeight - elem.clientHeight - 290;
     if (window.CanSendLoadMoreSignal && elem.scrollTop >= limit) {
       window.CanSendLoadMoreSignal = false;
-      console.log('load more...');
       this.props.handleMore();
     }
   }
+  styles = {
+    dialogImage: {
+      cursor: 'pointer',
+      width: '90vw',
+      height: '80vh',
+      objectFit: 'cover',
+      margin: '-24px',
+      display: 'block',
+    },
+    dialog: {
+      width: '90vw',
+      height: '80vh',
+      maxWidth: '90vw',
+    },
+  }
+  // generate enough blank block to fill space
+  zfillElements = Array.from({ length: 10 }).map((v, i) => (
+    <div key={i} style={{ width: '290px', height: 0 }} />
+  ))
   render() {
     window.CanSendLoadMoreSignal = true;
     return (
@@ -62,79 +95,66 @@ export default class ImageGrids extends React.Component {
         style={{ height: '100%' }}
         autoHide
         autoHideTimeout={200}
-        onScroll={this.handleWinScroll.bind(this)}
+        onScroll={this.handleWinScroll}
+        ref={scrollarea => this.scrollarea = scrollarea}
       >
         <section className="grid">
           {this.props.tiles.map(tile => (
-            <Paper key={tile.key} className="grid__item" zDepth={1}>
-              <figure
-                onTouchTap={() => this.handleDialogOpen(tile.big)}
-                className="grid__figure"
-              >
-                <Image src={tile.small} />
-              </figure>
-              <figcaption className="grid__figcaption">
-                <span className="download-stat">{tile.down}</span>
-                <IconButton
-                  onTouchTap={() => this.props.handleDownload(tile.big)}
+            <Lazyload className="grid__item" key={tile.key} parentDOM={this.state.scrollDOM}>
+              <Paper zDepth={1}>
+                <figure
+                  onTouchTap={() => this.handleDialogOpen(tile.big)}
+                  className="grid__figure"
                 >
-                  <FileDownload />
-                </IconButton>
-                <IconButton
-                  onTouchTap={() => this.props.handleSet(tile.big)}
-                >
-                  <Wallpaper />
-                </IconButton>
-                <IconMenu
-                  iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
-                  anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-                  targetOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-                >
-                  <MenuItem
-                    primaryText="Preview"
-                    onTouchTap={() => this.handleDialogOpen(tile.big)}
-                  />
-                  <Divider />
-                  <MenuItem
-                    primaryText="Set as Wallpaper"
-                    onTouchTap={() => this.props.handleSet(tile.big)}
-                  />
-                  <MenuItem
-                    primaryText="Download Wallpaper"
+                  <Image src={tile.small} />
+                </figure>
+                <figcaption className="grid__figcaption">
+                  <span className="download-stat">{tile.down}</span>
+                  <IconButton
                     onTouchTap={() => this.props.handleDownload(tile.big)}
-                  />
-                </IconMenu>
-              </figcaption>
-            </Paper>
+                  >
+                    <FileDownload />
+                  </IconButton>
+                  <IconButton
+                    onTouchTap={() => this.props.handleSet(tile.big)}
+                  >
+                    <Wallpaper />
+                  </IconButton>
+                  <IconMenu
+                    iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
+                    anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                    targetOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                  >
+                    <MenuItem
+                      primaryText="Preview"
+                      onTouchTap={() => this.handleDialogOpen(tile.big)}
+                    />
+                    <Divider />
+                    <MenuItem
+                      primaryText="Set as Wallpaper"
+                      onTouchTap={() => this.props.handleSet(tile.big)}
+                    />
+                    <MenuItem
+                      primaryText="Download Wallpaper"
+                      onTouchTap={() => this.props.handleDownload(tile.big)}
+                    />
+                  </IconMenu>
+                </figcaption>
+              </Paper>
+            </Lazyload>
           ))}
-          {
-            // generate enough blank block to fill space
-            Array.from({ length: 10 }).map((v, i) => (
-              <div key={i} style={{ width: '290px', height: 0 }} />
-            ))
-          }
+          {this.zfillElements}
         </section>
         <Dialog
           modal={false}
           open={this.state.dialogOpen}
-          onRequestClose={this.handleDialogClose.bind(this)}
-          contentStyle={{
-            width: '90vw',
-            height: '80vh',
-            maxWidth: '90vw',
-          }}
+          onRequestClose={this.handleDialogClose}
+          contentStyle={this.styles.dialog}
         >
           <Image
             src={this.state.url}
-            onTouchTap={this.handleDialogClose.bind(this)}
-            style={{
-              cursor: 'pointer',
-              width: '90vw',
-              height: '80vh',
-              objectFit: 'cover',
-              margin: '-24px',
-              display: 'block',
-            }}
+            onTouchTap={this.handleDialogClose}
+            style={this.styles.dialogImage}
           />
         </Dialog>
       </ScrollBars>

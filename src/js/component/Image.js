@@ -1,4 +1,6 @@
 import React from 'react';
+import ReactDom from 'react-dom';
+import { omit } from 'lodash';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 
 export default muiThemeable()(class extends React.Component {
@@ -15,7 +17,8 @@ export default muiThemeable()(class extends React.Component {
       url: '',
       loading: false,
     };
-    let delay = 0.5;
+    this.aborted = false;
+    this.delay = 1;
     this.xhr = new XMLHttpRequest();
     this.xhr.addEventListener('progress', (e) => {
       if (e.lengthComputable) {
@@ -26,34 +29,38 @@ export default muiThemeable()(class extends React.Component {
       }
     });
     this.xhr.addEventListener('load', () => {
-      if (this.xhr.status !== 200) {
-        // reload
-        delay *= 2;
-        setTimeout(() => this.xhr.send(), delay);
-        return;
+      if (this.xhr.status !== 200) this.handleAjaxError();
+      else {
+        const blob = this.xhr.response;
+        this.setState({ url: window.URL.createObjectURL(blob) });
       }
-      const blob = this.xhr.response;
-      this.setState({ url: window.URL.createObjectURL(blob) });
     });
     this.xhr.addEventListener('error', (e) => {
       console.error(e);
+      this.handleAjaxError();
     });
     this.xhr.responseType = 'blob';
     this.xhr.open('GET', props.src);
-    if (props.load) this.xhr.send();
+    this.xhr.send();
   }
-  componentWillReceiveProps(newProps) {
-    if (newProps.src !== this.props.src) {
+
+  handleAjaxError() {
+    // try 5 times
+    if (this.aborted || this.xhr.readyState === 0 || this.delay >= 5) return;
+    console.log(`Try to reload after ${this.delay}s`);
+    setTimeout(() => this.xhr.send(), this.delay);
+    this.delay++;
+    return;
+  }
+  componentWillUnmount() {
+    if (this.progress !== '100') {
+      this.aborted = true;
       this.xhr.abort();
-      this.xhr.open('GET', newProps.src);
-    }
-    if (newProps.load && this.state.loading === false) {
-      this.setState({ loading: true });
-      this.xhr.send();
     }
   }
   render() {
-    const { muiTheme, ...other } = this.props;
+    const { muiTheme, ...others } = this.props;
+
     const preloadStyle = {
       display: 'flex',
       justifyContent: 'center',
@@ -98,13 +105,8 @@ export default muiThemeable()(class extends React.Component {
         </div>
       </div>);
     const imageElement = <img src={this.state.url} className="image__img" />;
-
-    const args = {};
-    Object.keys(other).forEach((key) => {
-      if (key !== 'src' && key !== 'load')args[key] = other[key];
-    });
     return (
-      <div className="image" {...args}>
+      <div className="image" {...omit(others, ['src'])}>
         {this.state.url ? imageElement : preloadElement}
       </div>
     );

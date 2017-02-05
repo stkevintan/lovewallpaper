@@ -14,6 +14,7 @@
   "author": "KevinTan",
   "license": "MIT",
   "devDependencies": {
+    "archiver": "^1.3.0",
     "babel-loader": "^6.2.10",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-preset-es2015": "^6.22.0",
@@ -28,13 +29,16 @@
     "fly-postcss": "^1.2.0",
     "fly-webpack": "^1.1.1",
     "json-loader": "^0.5.4",
-    "node-zip": "^1.1.1",
     "webpack": "^1.14.0"
   },
   "dependencies": {
+    "autobind-decorator": "^1.3.4",
     "electron": "^1.4.15",
     "home-dir": "^1.0.0",
     "immutable": "^3.8.1",
+    "lodash": "^4.17.4",
+    "lodash.debounce": "^4.0.8",
+    "lodash.throttle": "^4.1.1",
     "material-ui": "^0.16.7",
     "node-fetch": "^1.6.3",
     "pify": "^2.3.0",

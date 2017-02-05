@@ -1,4 +1,5 @@
 import React from 'react';
+import autobind from 'autobind-decorator';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ipcRenderer } from 'electron';
@@ -43,6 +44,7 @@ export default class extends React.Component {
     const id = 1 * props.params.id;
     props.loadList(props.category.getIn([id, 'url']), ['category', id]);
   }
+  @autobind
   handleMore() {
     const id = 1 * this.props.params.id;
     const link = this.props.category.getIn([id, 'link']).toObject();
@@ -51,10 +53,12 @@ export default class extends React.Component {
       this.props.loadMore(link.next, ['category', id]);
     }
   }
+  @autobind
   handleDownload(url) {
     this.props.setModalStatus(true, `Downloading wallpaper from ${url}`);
     ipcRenderer.send('download-image', url);// directly send signal to main process.
   }
+  @autobind
   handleSet(url) {
     this.props.setModalStatus(true, `Setting wallpaper from ${url}`);
     ipcRenderer.send('set-wallpaper', url);
@@ -63,9 +67,9 @@ export default class extends React.Component {
     const { params, category } = this.props;
     return (<ImageGrids
       tiles={category.get(params.id).toJS().data || []}
-      handleMore={this.handleMore.bind(this)}
-      handleDownload={this.handleDownload.bind(this)}
-      handleSet={this.handleSet.bind(this)}
+      handleMore={this.handleMore}
+      handleDownload={this.handleDownload}
+      handleSet={this.handleSet}
     />);
   }
 }

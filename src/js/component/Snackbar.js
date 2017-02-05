@@ -1,4 +1,5 @@
 import React from 'react';
+import autobind from 'autobind-decorator';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Snackbar from 'material-ui/Snackbar';
@@ -9,9 +10,10 @@ const mapDispatchToProps = dispatch => bindActionCreators({ setSnackbarStatus },
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class extends React.Component {
-  handleRequestClose = () => {
+  @autobind
+  handleRequestClose() {
     this.props.setSnackbarStatus(false);
-  };
+  }
 
   render() {
     return (
@@ -19,7 +21,7 @@ export default class extends React.Component {
         open={this.props.show}
         message={this.props.message || ''}
         autoHideDuration={this.props.timeout}
-        onRequestClose={this.handleRequestClose.bind(this)}
+        onRequestClose={this.handleRequestClose}
       />
     );
   }

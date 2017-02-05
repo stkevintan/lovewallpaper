@@ -1,5 +1,5 @@
 const proc = require('child_process');
-const zip = new (require('node-zip'))();
+const archiver = require('archiver');
 const fs = require('fs');
 const electron = require('electron');
 const webpack = require('webpack');
@@ -57,12 +57,17 @@ function generator(platform) {
           this.error(err);
         } else {
           // compres
-          zip.file(appPath);
-          const data = zip.generate({ base64: false, compression: 'DEFLATE' });
-          fs.writeFile(`${appPath}.zip`, data, 'binary', (err2) => {
-            if (err2) reject(err2);
-            else resolve(appPath);
+          appPath = appPath[0];
+          const output = fs.createWriteStream(`${appPath}.zip`);
+          const archive = archiver('zip', {
+            store: true, // Sets the compression method to STORE.
           });
+          output.on('close', () => resolve(appPath));
+          output.on('error', error => reject(error));
+          archive.pipe(output);
+          archive.directory(appPath);
+          // finalize the archive (ie we are done appending files but streams have to finish yet)
+          archive.finalize();
         }
       });
     }));

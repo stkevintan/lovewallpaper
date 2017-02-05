@@ -1,4 +1,5 @@
 import React from 'react';
+import autobind from 'autobind-decorator';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Dialog from 'material-ui/Dialog';
@@ -11,16 +12,16 @@ const mapDispatchToProps = dispatch => bindActionCreators({ setModalStatus }, di
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class extends React.Component {
-  handleClose = () => {
+  @autobind
+  handleClose(){
     this.props.setModalStatus(false);
-  };
-
+  }
   render() {
     const actions = [
       <FlatButton
         label="Hide"
         primary
-        onTouchTap={this.handleClose.bind(this)}
+        onTouchTap={this.handleClose}
       />,
     ];
     return (

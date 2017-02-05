@@ -5,10 +5,9 @@ A 3rd-party lovewallpaper client, Using Electron, React, Redux, Immutable, React
 
 [Download](https://github.com/stkevintan/lovewallpaper/releases)
 
-## Features
-- Cross Platform(linux,windows,osx)
-- Simplest
-- Lazyload
+##TODO
+- lazyload image list
+
 
 ## Build
 ```bash
