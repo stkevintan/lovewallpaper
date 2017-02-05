@@ -7,9 +7,9 @@ const template = Immutable.fromJS({
   arch: 'x64',
   asar: true,
   ignore: [/src/, /\.vscode/, /test/, /tsconfig\.json/, /README\.md/, /\s+\.config\.js/, /flyfile/],
-  out: path.join(__dirname, '/production/'),
+  out: path.join(__dirname, `/production/${pkgconf.version}`),
   overwrite: true,
-  name: `${pkgconf.name}-${pkgconf.version}`,
+  name: `${pkgconf.name}`,
 });
 
 

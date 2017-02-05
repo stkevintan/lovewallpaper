@@ -49,7 +49,7 @@ export async function release() {
 function generator(platform) {
   const platforms = Array.isArray(platform) ? platform : [platform];
   return async function() {
-    // await this.start('release');
+    await this.start('release');
     const ps = platforms.map(p => new Promise((resolve, reject) => {
       packager(require('./build.config')[p], (err, appPath) => {
         if (err) {
@@ -59,13 +59,11 @@ function generator(platform) {
           // compres
           appPath = appPath[0];
           const output = fs.createWriteStream(`${appPath}.zip`);
-          const archive = archiver('zip', {
-            store: true, // Sets the compression method to STORE.
-          });
+          const archive = archiver('zip');
           output.on('close', () => resolve(appPath));
           output.on('error', error => reject(error));
           archive.pipe(output);
-          archive.directory(appPath);
+          archive.directory(appPath, '/');
           // finalize the archive (ie we are done appending files but streams have to finish yet)
           archive.finalize();
         }
