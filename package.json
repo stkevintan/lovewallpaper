@@ -43,6 +43,7 @@
     "node-fetch": "^1.6.3",
     "pify": "^2.3.0",
     "react": "^15.4.2",
+    "react-addons-css-transition-group": "^15.4.2",
     "react-custom-scrollbars": "^4.0.1",
     "react-dom": "^15.4.2",
     "react-lazyload": "^2.2.0",

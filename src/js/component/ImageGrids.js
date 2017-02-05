@@ -44,7 +44,7 @@ export default class ImageGrids extends React.Component {
   }
   componentDidMount() {
     // fuck react/no-did-mount-set-state
-    this.setState({ scrollDOM: ReactDOM.findDOMNode(this.scrollarea).firstChild });
+    this.setState({ scrollDOM: ReactDOM.findDOMNode(this.scrollarea).firstElementChild });
   }
   @autobind
   handleDialogClose() {
@@ -59,9 +59,6 @@ export default class ImageGrids extends React.Component {
   @autobind
   handleWinScroll(e) {
     const elem = e.target;
-    // thi.setState({ scrollTop: elem.scrollTop });
-    // pass down the scroll down
-    // this.setState({ scrollBottom: elem.scrollTop + elem.clientHeight });
     const limit = elem.scrollHeight - elem.clientHeight - 290;
     if (window.CanSendLoadMoreSignal && elem.scrollTop >= limit) {
       window.CanSendLoadMoreSignal = false;

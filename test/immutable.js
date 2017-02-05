@@ -6,4 +6,6 @@ const Immutable = require('immutable');
 
 const a = Immutable.List.of('a', 'b', 'c');
 const b = ['d', 'f', 'g'];
-console.log(a.merge(b).toJS());
+// console.log(a.merge(b).toJS());
+
+console.log(a.includes('a'));

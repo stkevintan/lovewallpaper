@@ -13,7 +13,9 @@ export default function (state, action) {
     return state.updateIn(action.position, map =>
       map
         .update('link', m => m.merge(action.content.link))
-        .update('data', a => a.concat(action.content.data))
+        // filter the duplication items.
+        .update('data', a => a.concat(action.content.data.filter(i => !a.some(d => d.key === i.key)))
+        )
     );
   }
   return state;

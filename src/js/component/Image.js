@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDom from 'react-dom';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { omit } from 'lodash';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 
@@ -93,8 +93,9 @@ export default muiThemeable()(class extends React.Component {
         transition: 'all 0.2s linear',
       },
     };
+    // image and preload element must get a key to enable animate.
     const preloadElement = (
-      <div className="image__preload" style={preloadStyle}>
+      <div key="preload" className="image__preload" style={preloadStyle}>
         <div className="image__wrapper" style={wrapperStyle}>
           <div className="image__progress" style={progressStyle}>
             {this.state.progress}%
@@ -103,11 +104,17 @@ export default muiThemeable()(class extends React.Component {
             <line style={svgStyle.line} x1="20%" y1="0" x2="80%" y2="0" />
           </svg>
         </div>
-      </div>);
-    const imageElement = <img src={this.state.url} className="image__img" />;
+      </div>
+    );
+    const imageElement = (
+      <ReactCSSTransitionGroup transitionName="fade" transitionAppear transitionAppearTimeout={500} transitionEnterTimeout={500} transitionLeaveTimeout={0}>
+        <img key="image" src={this.state.url} className="image__img" />
+      </ReactCSSTransitionGroup>
+    );
     return (
       <div className="image" {...omit(others, ['src'])}>
-        {this.state.url ? imageElement : preloadElement}
+        {preloadElement}
+        {this.state.url ? imageElement : null }
       </div>
     );
   }

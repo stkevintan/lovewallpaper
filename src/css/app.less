@@ -30,7 +30,7 @@ body{
 .grid{
   position: relative;
   display: flex;
-  padding: 0 20px;
+  padding: 20px;
   justify-content: center;
   flex-wrap: wrap;
   &__item{
@@ -42,8 +42,6 @@ body{
     cursor: pointer;
     margin: 0;
     height: @grid-item_width;
-    // background-size: cover;
-    // background-position: 50%;
   }
   &__figcaption{
     position: relative; // why?
@@ -73,17 +71,40 @@ body{
 
 //Image
 .image{
+  position: relative;
+  perspective: 800px;
   width: 100%;
   height: 100%;
   &__preload{
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
   }
   &__img{
+    position: relative;
+    z-index: 2;
     display:block;
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 }
+// react-animate
+.fade-enter,.fade-appear{
+  opacity: 0.01;
+}
+.fade-enter-active,.fade-appear-active{
+  opacity: 1;
+  transition:opacity 500ms ease-in;
+}
 
+.rotate-enter,.rotate-appear{
+  transform: rotateX(30deg);
+}
+.rotate-enter-active,.rotate-appear-active{
+  transform: rotateX(0);
+  transition: transform .5s ease-in;
+}

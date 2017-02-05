@@ -1,18 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { omit, throttle } from 'lodash';
 
-export default class extends React.Component {
+export default class Lazyload extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       load: false,
     };
   }
+  // the componentDidMount event must be triggered after its parent's.
   componentDidMount() {
-    const parentDOM = this.props.parentDOM;
-    if (!parentDOM && this.state.load) return;
+    if (this.state.load) return;
     const itemDOM = ReactDOM.findDOMNode(this);
+    const parentDOM = this.props.parentDOM || itemDOM.parentElement;
     let handler = () => {
       const scrollBottom = parentDOM.scrollTop + parentDOM.clientHeight;
       if (itemDOM.offsetTop <= scrollBottom) {
@@ -24,15 +26,25 @@ export default class extends React.Component {
     handler();
     handler = throttle(handler, 300);
     parentDOM.addEventListener('scroll', handler);
-    parentDOM.addEventListener('resize', handler);
+    window.addEventListener('resize', handler);
   }
-  placeholderElement = <div />;
+  placeholderElement = <div />
   render() {
     const passDownArgs = omit(this.props, ['parentDOM']);
+    const children = (
+      <ReactCSSTransitionGroup transitionName="rotate" transitionAppear transitionAppearTimeout={500} transitionEnterTimeout={500} transitionLeaveTimeout={500}>
+        {this.props.children}
+      </ReactCSSTransitionGroup>
+    );
     return (
-      <div {...passDownArgs}>
-        {this.state.load ? this.props.children : this.placeholderElement }
+      <div{...passDownArgs}>
+        {this.state.load ? children : this.placeholderElement }
       </div>
+
     );
   }
 }
+
+Lazyload.propTypes = {
+  parentDOM: React.PropTypes.instanceOf(HTMLElement),
+};
