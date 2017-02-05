@@ -32,7 +32,7 @@ export default class Lazyload extends React.Component {
   render() {
     const passDownArgs = omit(this.props, ['parentDOM']);
     const children = (
-      <ReactCSSTransitionGroup transitionName="rotate" transitionAppear transitionAppearTimeout={500} transitionEnterTimeout={500} transitionLeaveTimeout={500}>
+      <ReactCSSTransitionGroup transitionName="scale" transitionAppear transitionAppearTimeout={500} transitionEnterTimeout={500} transitionLeaveTimeout={500}>
         {this.props.children}
       </ReactCSSTransitionGroup>
     );

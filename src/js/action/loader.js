@@ -41,7 +41,6 @@ export function loadList(url, position) {
 export function loadMore(url, position) {
   return (dispatch) => {
     ipcRenderer.once('load-more-reply', (e, metadata = {}) => {
-      console.log('load more', metadata);
       for (const data of metadata.data || []) {
         data.small = data.small.replace(/(\/\d+),\d+,\d+/, '$1,250,250');
       }

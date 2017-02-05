@@ -37,8 +37,6 @@
     "home-dir": "^1.0.0",
     "immutable": "^3.8.1",
     "lodash": "^4.17.4",
-    "lodash.debounce": "^4.0.8",
-    "lodash.throttle": "^4.1.1",
     "material-ui": "^0.16.7",
     "node-fetch": "^1.6.3",
     "pify": "^2.3.0",
@@ -46,14 +44,12 @@
     "react-addons-css-transition-group": "^15.4.2",
     "react-custom-scrollbars": "^4.0.1",
     "react-dom": "^15.4.2",
-    "react-lazyload": "^2.2.0",
     "react-redux": "^5.0.2",
     "react-router": "^3.0.2",
     "react-tap-event-plugin": "^2.0.1",
     "redux": "^3.6.0",
     "redux-immutable": "^3.0.10",
     "redux-logger": "^2.7.4",
-    "redux-thunk": "^2.2.0",
-    "scrollreveal": "^3.3.2"
+    "redux-thunk": "^2.2.0"
   }
 }

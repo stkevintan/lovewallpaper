@@ -107,7 +107,7 @@ export default muiThemeable()(class extends React.Component {
       </div>
     );
     const imageElement = (
-      <ReactCSSTransitionGroup transitionName="fade" transitionAppear transitionAppearTimeout={500} transitionEnterTimeout={500} transitionLeaveTimeout={0}>
+      <ReactCSSTransitionGroup transitionName="fade" transitionAppear transitionAppearTimeout={300} transitionEnterTimeout={500} transitionLeaveTimeout={0}>
         <img key="image" src={this.state.url} className="image__img" />
       </ReactCSSTransitionGroup>
     );

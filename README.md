@@ -7,9 +7,9 @@ A 3rd-party lovewallpaper client, Using Electron, React, Redux, Immutable, React
 
 ##Feature
 - Corss platform
-- Lazyload image
+- Lazyload
 - Fluid layout
-- Simplest && elegant
+- Simple and elegant
 
 ## Build
 ```bash

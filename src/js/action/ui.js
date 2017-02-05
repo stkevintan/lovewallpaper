@@ -28,7 +28,6 @@ export function setModalStatus(status, message = '') {
 }
 
 ipcRenderer.on('message', (e, message) => {
-  console.log(message);
   // close dialog if necessary
   if (store.getState().getIn(['ui', 'modal', 'show'])) {
     store.dispatch(setModalStatus(false));

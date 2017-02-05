@@ -13,7 +13,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({ setModalStatus }, di
 @connect(mapStateToProps, mapDispatchToProps)
 export default class extends React.Component {
   @autobind
-  handleClose(){
+  handleClose() {
     this.props.setModalStatus(false);
   }
   render() {

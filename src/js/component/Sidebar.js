@@ -91,7 +91,7 @@ export default class extends React.Component {
                 nestedItems={
                   this.props.category.map((name, index) => (
                     <SideBarLink key={index} to={`/image/category/${index}`}>
-                      <ListItem onTouchTap={() => this.props.setSidebarStatus(false)}>
+                      <ListItem style={{ paddingLeft: '16px' }} onTouchTap={() => this.props.setSidebarStatus(false)}>
                         {name}
                       </ListItem>
                     </SideBarLink>
@@ -106,7 +106,7 @@ export default class extends React.Component {
                 nestedItems={
                   this.props.everyday.map((name, index) => (
                     <SideBarLink key={index} to={`/image/everyday/${index}`}>
-                      <ListItem onTouchTap={() => this.props.setSidebarStatus(false)}>
+                      <ListItem style={{ paddingLeft: '16px' }} onTouchTap={() => this.props.setSidebarStatus(false)}>
                         {name}
                       </ListItem>
                     </SideBarLink>

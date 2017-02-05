@@ -23,16 +23,13 @@ module.exports = class API {
     this.initial = false;
   }
   load(size = { width: this.width, height: this.height }) {
-    console.log(url.format({
+    const destUrl = url.format({
       protocol: 'http',
       hostname,
       query: size,
-    }));
-    return fetch(url.format({
-      protocol: 'http',
-      hostname,
-      query: size,
-    }), { headers })
+    });
+    console.log('initial', destUrl);
+    return fetch(destUrl, { headers })
       .then(res => res.json())
       .then((json) => {
         this.initial = true;

@@ -98,7 +98,7 @@ body{
 }
 .fade-enter-active,.fade-appear-active{
   opacity: 1;
-  transition:opacity 500ms ease-in;
+  transition:opacity .3s ease-in;
 }
 
 .rotate-enter,.rotate-appear{
@@ -107,4 +107,14 @@ body{
 .rotate-enter-active,.rotate-appear-active{
   transform: rotateX(0);
   transition: transform .5s ease-in;
+}
+
+.scale-enter,.scale-appear{
+  opacity: 0.01;
+  transform: scale(0.9);
+}
+.scale-enter-active,.scale-appear-active{
+  transform: scale(1);
+  opacity: 1;
+  transition: all .5s ease-in;
 }

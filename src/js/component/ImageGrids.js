@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import autobind from 'autobind-decorator';
-// import ScrollReveal from 'scrollreveal';
 
 import ScrollBars from 'react-custom-scrollbars';
 import Paper from 'material-ui/Paper';
@@ -43,8 +42,8 @@ export default class ImageGrids extends React.Component {
     this.handleWinScroll = debounce(this.handleWinScroll, 200);
   }
   componentDidMount() {
-    // fuck react/no-did-mount-set-state
-    this.setState({ scrollDOM: ReactDOM.findDOMNode(this.scrollarea).firstElementChild });
+    // fuck off react/no-did-mount-set-state
+    this.setState({ scrollDOM: ReactDOM.findDOMNode(this).firstElementChild });
   }
   @autobind
   handleDialogClose() {
@@ -88,12 +87,10 @@ export default class ImageGrids extends React.Component {
     window.CanSendLoadMoreSignal = true;
     return (
       <ScrollBars
-        className="scrollarea"
         style={{ height: '100%' }}
         autoHide
         autoHideTimeout={200}
         onScroll={this.handleWinScroll}
-        ref={scrollarea => this.scrollarea = scrollarea}
       >
         <section className="grid">
           {this.props.tiles.map(tile => (
