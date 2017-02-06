@@ -1,4 +1,5 @@
 import React from 'react';
+import Immutable from 'immutable';
 import autobind from 'autobind-decorator';
 import { ipcRenderer } from 'electron';
 import { connect } from 'react-redux';
@@ -19,16 +20,18 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 }, dispatch);
 
 @connect(mapStateToProps, mapDispatchToProps)
-export default class extends React.Component {
+export default class Everyday extends React.Component {
   static propTypes = {
+    params: React.PropTypes.shape({ id: React.PropTypes.string.isRequired }).isRequired,
     loadList: React.PropTypes.func.isRequired,
-    everyday: React.PropTypes.object.isRequired,
+    everyday: React.PropTypes.instanceOf(Immutable.List).isRequired,
     loadMore: React.PropTypes.func.isRequired,
     setSnackbarStatus: React.PropTypes.func.isRequired,
     setModalStatus: React.PropTypes.func.isRequired,
-  }
+  };
   constructor(props) {
     super(props);
+    this.loadList = props.loadList;
     this.load(props);
   }
   componentWillReceiveProps(props) {
@@ -38,9 +41,10 @@ export default class extends React.Component {
       this.load(props);
     }
   }
+  @autobind
   load(props) {
     const id = 1 * props.params.id;
-    props.loadList(props.everyday.getIn([id, 'url']), ['everyday', id]);
+    this.loadList(props.everyday.getIn([id, 'url']), ['everyday', id]);
   }
   @autobind
   handleMore() {
@@ -64,7 +68,7 @@ export default class extends React.Component {
   render() {
     const { params, everyday } = this.props;
     return (<ImageGrids
-      tiles={everyday.get(params.id).toJS().data || []}
+      tiles={everyday.get(params.id).toJS().data}
       handleMore={this.handleMore}
       handleDownload={this.handleDownload}
       handleSet={this.handleSet}

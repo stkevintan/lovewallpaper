@@ -1,3 +1,4 @@
+/* eslint-disable */
 const proc = require('child_process');
 const archiver = require('archiver');
 const fs = require('fs');

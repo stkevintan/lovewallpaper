@@ -13,6 +13,8 @@ A 3rd-party lovewallpaper client, Using Electron, React, Redux, Immutable, React
 
 ## Build
 ```bash
+# Install the dev dependencies
+npm i -g fly@1.4.1 fly-esnext@1.0.1
 git clone https://github.com/stkevintan/lovewallpaper
 cd lovewallpaper
 npm i

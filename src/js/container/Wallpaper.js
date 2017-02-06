@@ -21,7 +21,10 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 export default class extends React.Component {
   static propTypes = {
     loadList: React.PropTypes.func.isRequired,
-    wallpaper: React.PropTypes.object.isRequired,
+    wallpaper: React.PropTypes.shape({
+      url: React.PropTypes.string.isRequired,
+      data: React.PropTypes.array,
+    }).isRequired,
     loadMore: React.PropTypes.func.isRequired,
     setSnackbarStatus: React.PropTypes.func.isRequired,
     setModalStatus: React.PropTypes.func.isRequired,
@@ -50,7 +53,7 @@ export default class extends React.Component {
   }
   render() {
     return (<ImageGrids
-      tiles={this.props.wallpaper.data || []}
+      tiles={this.props.wallpaper.data}
       handleMore={this.handleMore}
       handleDownload={this.handleDownload}
       handleSet={this.handleSet}

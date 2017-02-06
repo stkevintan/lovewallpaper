@@ -26,10 +26,13 @@ export default class ImageGrids extends React.Component {
       small: React.PropTypes.string.isRequired,
       big: React.PropTypes.string.isRequired,
       down: React.PropTypes.number.isRequired,
-    })).isRequired,
+    })),
     handleMore: React.PropTypes.func.isRequired,
     handleDownload: React.PropTypes.func.isRequired,
     handleSet: React.PropTypes.func.isRequired,
+  };
+  static defaultProps = {
+    tiles: [],
   }
   constructor(props) {
     super(props);
@@ -80,9 +83,10 @@ export default class ImageGrids extends React.Component {
     },
   }
   // generate enough blank block to fill space
-  zfillElements = Array.from({ length: 10 }).map((v, i) => (
-    <div key={i} style={{ width: '290px', height: 0 }} />
-  ))
+  zfillElements = Array.from({ length: 10 }).map((v, i) => {
+    v = i;
+    return <div key={v} style={{ width: '290px', height: 0 }} />;
+  })
   render() {
     window.CanSendLoadMoreSignal = true;
     return (

@@ -12,10 +12,10 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 }, dispatch);
 
 @connect(null, mapDispatchToProps)
-export default class extends React.Component {
+export default class Appbar extends React.Component {
   static propTypes = {
-    setSidebarStatus: React.PropTypes.func,
-  }
+    setSidebarStatus: React.PropTypes.func.isRequired,
+  };
   render() {
     return (
       <AppBar

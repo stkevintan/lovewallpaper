@@ -1,4 +1,5 @@
 import React from 'react';
+import Immutable from 'immutable';
 import autobind from 'autobind-decorator';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -21,16 +22,18 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 }, dispatch);
 
 @connect(mapStateToProps, mapDispatchToProps)
-export default class extends React.Component {
+export default class Category extends React.Component {
   static propTypes = {
+    params: React.PropTypes.shape({ id: React.PropTypes.string.isRequired }).isRequired,
     loadList: React.PropTypes.func.isRequired,
-    category: React.PropTypes.object.isRequired,
+    category: React.PropTypes.instanceOf(Immutable.List).isRequired,
     loadMore: React.PropTypes.func.isRequired,
     setSnackbarStatus: React.PropTypes.func.isRequired,
     setModalStatus: React.PropTypes.func.isRequired,
-  }
+  };
   constructor(props) {
     super(props);
+    this.loadList = this.props.loadList;
     this.load(props);
   }
   componentWillReceiveProps(props) {
@@ -40,9 +43,11 @@ export default class extends React.Component {
       this.load(props);
     }
   }
+
+  @autobind
   load(props) {
     const id = 1 * props.params.id;
-    props.loadList(props.category.getIn([id, 'url']), ['category', id]);
+    this.loadList(props.category.getIn([id, 'url']), ['category', id]);
   }
   @autobind
   handleMore() {
@@ -66,7 +71,7 @@ export default class extends React.Component {
   render() {
     const { params, category } = this.props;
     return (<ImageGrids
-      tiles={category.get(params.id).toJS().data || []}
+      tiles={category.get(params.id).toJS().data}
       handleMore={this.handleMore}
       handleDownload={this.handleDownload}
       handleSet={this.handleSet}

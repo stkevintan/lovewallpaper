@@ -3,13 +3,15 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { omit } from 'lodash';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 
-export default muiThemeable()(class extends React.Component {
+class Image extends React.Component {
   static propTypes = {
     src: React.PropTypes.string.isRequired,
-    preloadElement: React.PropTypes.element,
-    onload: React.PropTypes.func,
-    onerror: React.PropTypes.func,
-  }
+    muiTheme: React.PropTypes.shape({
+      palette: React.PropTypes.shape({
+        primary1Color: React.PropTypes.string.isRequired,
+      }).isRequired,
+    }).isRequired,
+  };
   constructor(props) {
     super(props);
     this.state = {
@@ -44,20 +46,21 @@ export default muiThemeable()(class extends React.Component {
     this.xhr.send();
   }
 
-  handleAjaxError() {
-    // try 5 times
-    if (this.aborted || this.xhr.readyState === 0 || this.delay >= 5) return;
-    console.log(`Try to reload after ${this.delay}s`);
-    setTimeout(() => this.xhr.send(), this.delay);
-    this.delay++;
-    return;
-  }
   componentWillUnmount() {
     if (this.progress !== '100') {
       this.aborted = true;
       this.xhr.abort();
     }
   }
+
+  handleAjaxError() {
+    // try 5 times
+    if (this.aborted || this.xhr.readyState === 0 || this.delay >= 5) return;
+    console.log(`Try to reload after ${this.delay}s`);
+    setTimeout(() => this.xhr.send(), this.delay);
+    this.delay++;
+  }
+
   render() {
     const { muiTheme, ...others } = this.props;
 
@@ -108,7 +111,7 @@ export default muiThemeable()(class extends React.Component {
     );
     const imageElement = (
       <ReactCSSTransitionGroup transitionName="fade" transitionAppear transitionAppearTimeout={300} transitionEnterTimeout={500} transitionLeaveTimeout={0}>
-        <img key="image" src={this.state.url} className="image__img" />
+        <img key="image" src={this.state.url} className="image__img" alt="wallpaper preview" />
       </ReactCSSTransitionGroup>
     );
     return (
@@ -118,4 +121,7 @@ export default muiThemeable()(class extends React.Component {
       </div>
     );
   }
-});
+}
+
+
+export default muiThemeable()(Image);

@@ -26,23 +26,31 @@ const SideBarLink = ({ to, children }) => (
   </Link>
 );
 
+SideBarLink.propTypes = {
+  to: React.PropTypes.string.isRequired,
+  children: React.PropTypes.element.isRequired,
+};
+
 const transform = iarr => iarr.map(imap => imap.get('name')).toArray();
+
 const mapStateToProps = state => ({
   show: state.getIn(['ui', 'sidebar', 'show']),
   category: transform(state.getIn(['metadata', 'category'])),
   everyday: transform(state.getIn(['metadata', 'everyday'])),
 });
+
 const mapDisPatcherToProps = dispatch => bindActionCreators({
   setSidebarStatus,
 }, dispatch);
+
 @connect(mapStateToProps, mapDisPatcherToProps)
-export default class extends React.Component {
-  static propTypes={
+export default class Sidebar extends React.Component {
+  static propTypes = {
     show: React.PropTypes.bool.isRequired,
     setSidebarStatus: React.PropTypes.func.isRequired,
     category: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
     everyday: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
-  }
+  };
   constructor(props) {
     super(props);
     this.state = {
@@ -90,7 +98,7 @@ export default class extends React.Component {
                 primaryTogglesNestedList
                 nestedItems={
                   this.props.category.map((name, index) => (
-                    <SideBarLink key={index} to={`/image/category/${index}`}>
+                    <SideBarLink key={name} to={`/image/category/${index}`}>
                       <ListItem style={{ paddingLeft: '16px' }} onTouchTap={() => this.props.setSidebarStatus(false)}>
                         {name}
                       </ListItem>
@@ -105,7 +113,7 @@ export default class extends React.Component {
                 primaryTogglesNestedList
                 nestedItems={
                   this.props.everyday.map((name, index) => (
-                    <SideBarLink key={index} to={`/image/everyday/${index}`}>
+                    <SideBarLink key={name} to={`/image/everyday/${index}`}>
                       <ListItem style={{ paddingLeft: '16px' }} onTouchTap={() => this.props.setSidebarStatus(false)}>
                         {name}
                       </ListItem>
@@ -120,4 +128,3 @@ export default class extends React.Component {
     );
   }
 }
-

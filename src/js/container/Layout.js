@@ -6,6 +6,12 @@ import Snackbar from '../component/Snackbar';
 import Modal from '../component/Modal';
 
 export default class extends React.Component {
+  static propTypes = {
+    children: React.PropTypes.element,
+  }
+  static defaultProps = {
+    children: <div />,
+  }
   render() {
     return (
       <div className="wrapper">

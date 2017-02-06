@@ -9,7 +9,17 @@ const mapStateToProps = state => state.getIn(['ui', 'snackbar']).toObject();
 const mapDispatchToProps = dispatch => bindActionCreators({ setSnackbarStatus }, dispatch);
 
 @connect(mapStateToProps, mapDispatchToProps)
-export default class extends React.Component {
+export default class SnackBar extends React.Component {
+  static propTypes = {
+    setSnackbarStatus: React.PropTypes.func.isRequired,
+    show: React.PropTypes.bool.isRequired,
+    message: React.PropTypes.string,
+    timeout: React.PropTypes.number,
+  };
+  static defaultProps = {
+    message: '',
+    timeout: 400,
+  };
   @autobind
   handleRequestClose() {
     this.props.setSnackbarStatus(false);
@@ -19,7 +29,7 @@ export default class extends React.Component {
     return (
       <Snackbar
         open={this.props.show}
-        message={this.props.message || ''}
+        message={this.props.message}
         autoHideDuration={this.props.timeout}
         onRequestClose={this.handleRequestClose}
       />

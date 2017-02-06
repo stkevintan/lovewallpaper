@@ -4,6 +4,14 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { omit, throttle } from 'lodash';
 
 export default class Lazyload extends React.Component {
+  static propTypes = {
+    parentDOM: React.PropTypes.instanceOf(HTMLElement),
+    children: React.PropTypes.element.isRequired,
+  };
+  static defaultProps = {
+    parentDOM: null,
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -45,6 +53,3 @@ export default class Lazyload extends React.Component {
   }
 }
 
-Lazyload.propTypes = {
-  parentDOM: React.PropTypes.instanceOf(HTMLElement),
-};

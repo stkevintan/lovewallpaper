@@ -1,0 +1,51 @@
+{
+    "env": {
+        "browser": true,
+        "commonjs": true,
+        "es6": true,
+        "node": true
+    },
+    "parser": "babel-eslint",
+    "parserOptions": {
+        "ecmaFeatures": {
+        "arrowFunctions": true,
+        "binaryLiterals": true,
+        "blockBindings": true,
+        "classes": true,
+        "defaultParams": true,
+        "destructuring": true,
+        "forOf": true,
+        "generators": true,
+        "modules": true,
+        "objectLiteralComputedProperties": true,
+        "objectLiteralDuplicateProperties": true,
+        "objectLiteralShorthandMethods": true,
+        "objectLiteralShorthandProperties": true,
+        "octalLiterals": true,
+        "regexUFlag": true,
+        "regexYFlag": true,
+        "spread": true,
+        "superInFunctions": true,
+        "templateStrings": true,
+        "unicodeCodePointEscapes": true,
+        "globalReturn": true,
+        "jsx": true,
+        "experimentalObjectRestSpread": true
+        },
+        "sourceType": "module"
+    },
+    "extends": "airbnb",
+    "rules": {
+        "react/no-did-mount-set-state":"off",
+        "no-plusplus":"off",
+        "no-mixed-operators": "off",
+        "react/no-find-dom-node":"off",
+        "react/jsx-filename-extension":"off",
+        "class-methods-use-this":"off",
+        "react/prefer-stateless-function":"off",
+        "no-restricted-syntax":"off",
+        "no-param-reassign":"off",
+        // allow import devDependencies
+        "import/no-extraneous-dependencies": ["error", {"devDependencies": true, "optionalDependencies": false, "peerDependencies": false}]
+    }
+}

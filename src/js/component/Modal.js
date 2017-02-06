@@ -11,7 +11,12 @@ const mapStateToProps = state => state.getIn(['ui', 'modal']).toObject();
 const mapDispatchToProps = dispatch => bindActionCreators({ setModalStatus }, dispatch);
 
 @connect(mapStateToProps, mapDispatchToProps)
-export default class extends React.Component {
+export default class Modal extends React.Component {
+  static propTypes = {
+    setModalStatus: React.PropTypes.func.isRequired,
+    show: React.PropTypes.bool.isRequired,
+    message: React.PropTypes.string.isRequired,
+  };
   @autobind
   handleClose() {
     this.props.setModalStatus(false);
@@ -39,3 +44,4 @@ export default class extends React.Component {
     );
   }
 }
+
