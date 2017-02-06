@@ -55,8 +55,7 @@ function listeners() {
     .catch((err) => { console.log(err); e.sender.send('message', 'Loading Failed  Σ(;ﾟдﾟ)'); })
     .then(filePath => wallpaper.set(filePath)
       .then(() => e.sender.send('message', 'Wallpaper has been set (•ㅂ•)/'))
-      .catch((err) => { console.log(err); e.sender.send('message', 'Loading Failed  Σ(;ﾟдﾟ)'); })
-    );
+      .catch((err) => { console.log(err); e.sender.send('message', 'Loading Failed  Σ(;ﾟдﾟ)'); }));
   });
 }
 

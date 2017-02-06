@@ -6,6 +6,7 @@ const cp = pify(childProcess);
 
 const appsList = [
   {
+    // gnome3
     cmd: 'gsettings',
     set: ['set',
       'org.gnome.desktop.background',
@@ -19,18 +20,7 @@ const appsList = [
     transform: imagePath => imagePath.slice(8, -1),
   },
   {
-    cmd: 'setroot',
-    set: ['%s'],
-  },
-  {
-    cmd: 'pcmanfm',
-    set: ['-w %s'],
-  },
-  {
-    cmd: 'feh',
-    set: ['--bg-scale', '%s'],
-  },
-  {
+    // xfce4
     cmd: 'xfconf-query',
     set: ['-c xfce4-desktop',
       '-p /backdrop/screen0/monitor0/image-path',
@@ -38,6 +28,12 @@ const appsList = [
     ],
   },
   {
+    // xfce4
+    cmd: path.join(__dirname, 'xfce4-wallpaper.sh'),
+    set: ['%s'],
+  },
+  {
+    // gnome2
     cmd: 'gconftool-2',
     set: ['--set',
       '/desktop/gnome/background/picture_filename',
@@ -46,6 +42,7 @@ const appsList = [
     ],
   },
   {
+    // kde 3
     cmd: 'dcop',
     set: ['kdesktop',
       'KBackgroundIface',
@@ -54,6 +51,12 @@ const appsList = [
     ],
   },
   {
+    // kde 4
+    cmd: path.join(__dirname, 'kde-wallpaper.sh'),
+    set: ['%s'],
+  },
+  {
+    // mate
     cmd: 'dconf',
     set: ['write',
       '/org/mate/desktop/background/picture-filename',
@@ -64,6 +67,7 @@ const appsList = [
     transform: imagePath => imagePath.slice(1, -1),
   },
   {
+    // cinnamon
     cmd: 'gsettings',
     set: ['set',
       'org.cinnamon.desktop.background',
@@ -74,6 +78,19 @@ const appsList = [
       'org.cinnamon.desktop.background',
       'picture-uri',
     ],
+  },
+  // wm
+  {
+    cmd: 'setroot',
+    set: ['%s'],
+  },
+  {
+    cmd: 'pcmanfm',
+    set: ['-w %s'],
+  },
+  {
+    cmd: 'feh',
+    set: ['--bg-scale', '%s'],
   },
 ];
 
@@ -136,6 +153,7 @@ exports.get = function get() {
       }, () => resolve(false));
     });
   };
+
   return Promise.all(availableApps.map(letsTry)).then((values) => {
     values = values.filter(v => v);
     if (values.length === 0) return Promise.reject('No suitable way to get wallpaepr in your environment');
@@ -155,14 +173,15 @@ exports.set = function set(imagePath) {
 
   const letsTry = (app) => {
     if (!app.set) return false;
-    const params = app.set.slice();
-    params[params.length - 1] = params[params.length - 1].replace('%s', path.resolve(imagePath));
+    const params = app.set.slice().map(str => str.replace('%s', path.resolve(imagePath)));
+
     return new Promise((resolve) => {
       cp.execFile(app.cmd, params)
       .then(() => resolve(true))
       .catch(() => resolve(false));
     });
   };
+
   return Promise.all(availableApps.map(letsTry))
     .then((values) => {
       if (values.every(value => !value)) return Promise.reject('No suitable way to set wallpaepr in your environment');
