@@ -29,8 +29,8 @@ const appsList = [
   },
   {
     // xfce4
-    cmd: path.join(__dirname, 'xfce4-wallpaper.sh'),
-    set: ['%s'],
+    cmd: 'bash',
+    set: [path.join(__dirname, 'xfce4-wallpaper.sh'), '%s'],
   },
   {
     // gnome2
@@ -52,8 +52,8 @@ const appsList = [
   },
   {
     // kde 4
-    cmd: path.join(__dirname, 'kde-wallpaper.sh'),
-    set: ['%s'],
+    cmd: 'sh',
+    set: [path.join(__dirname, 'kde-wallpaper.sh'), '%s'],
   },
   {
     // mate
@@ -108,15 +108,12 @@ function setAvailableApps() {
   });
 
   // `which` all commands and expect stdout to return a positive
-  const whichCmd = `which -a ${names.join('; which -a ')}`;
-
+  const whichCmd = `which -a ${names.join('; which -a ')}; true`;
   return cp.exec(whichCmd).then((stdout) => {
     stdout = stdout.trim();
-
     if (!stdout) {
       throw new Error('None of the apps were found');
     }
-
     // it may return aliases so we only want the real path
     // and only the executable name. i.e. 'foo' from /bin/foo
     stdout = stdout.split('\n');
